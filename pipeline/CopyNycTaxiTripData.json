@@ -52,7 +52,7 @@
 						"referenceName": "AzureSqlTable1",
 						"type": "DatasetReference",
 						"parameters": {
-							"tablename": "YelloTripData"
+							"tablename": "YellowTripData"
 						}
 					}
 				]
