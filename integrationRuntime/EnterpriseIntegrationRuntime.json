@@ -1,0 +1,7 @@
+{
+	"name": "EnterpriseIntegrationRuntime",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "For moving data between data sources within enterprise secured network"
+	}
+}
