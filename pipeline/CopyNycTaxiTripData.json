@@ -83,7 +83,7 @@
 						"Content-Type": "application/json"
 					},
 					"body": {
-						"value": "{\n    \"DataFactoryName\": \"@{pipeline().DataFactory}\",\n    \"PipelineName\": \"pipeline().parameters.PipelineName\",\n    \"SendToEmail\": pipeline().parameters.SendToEmail,\n    \"Subject\": \"pipeline().parameters.Subject\"\n}",
+						"value": "{\n    \"DataFactoryName\": \"@{pipeline().DataFactory}\",\n    \"PipelineName\": \"pipeline().parameters.PipelineName\",\n    \"SendToEmail\": \"pipeline().parameters.SendToEmail\",\n    \"Subject\": \"pipeline().parameters.Subject\"\n}",
 						"type": "Expression"
 					}
 				}
