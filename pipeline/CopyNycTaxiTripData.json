@@ -50,14 +50,24 @@
 				"outputs": [
 					{
 						"referenceName": "AzureSqlTable1",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"tablename": "YelloTripData"
+						}
 					}
 				]
 			},
 			{
 				"name": "Send Email",
 				"type": "WebActivity",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Copy Data from ADLS",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -71,6 +81,10 @@
 					"method": "POST",
 					"headers": {
 						"Content-Type": "application/json"
+					},
+					"body": {
+						"value": "{\n    \"DataFactoryName\": \"@{pipeline().DataFactory}\",\n    \"PipelineName\": \"pipeline().parameters.PipelineName\",\n    \"SendToEmail\": pipeline().parameters.SendToEmail,\n    \"Subject\": \"pipeline().parameters.Subject\"\n}",
+						"type": "Expression"
 					}
 				}
 			}
