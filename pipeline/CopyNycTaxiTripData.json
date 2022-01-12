@@ -75,6 +75,23 @@
 				}
 			}
 		],
+		"parameters": {
+			"PipelineName": {
+				"type": "string",
+				"defaultValue": "Copy Taxi Data"
+			},
+			"DataFactoryName": {
+				"type": "string"
+			},
+			"SendToEmail": {
+				"type": "string",
+				"defaultValue": "saravanan.ponnnaiah@outlook.com"
+			},
+			"Subject": {
+				"type": "string",
+				"defaultValue": "ADF Notification Mailer"
+			}
+		},
 		"annotations": []
 	}
 }
