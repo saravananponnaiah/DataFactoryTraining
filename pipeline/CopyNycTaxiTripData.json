@@ -1,5 +1,5 @@
 {
-	"name": "CopyDataPipeline",
+	"name": "CopyNycTaxiTripData",
 	"properties": {
 		"activities": [
 			{
