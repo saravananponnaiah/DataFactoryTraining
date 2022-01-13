@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": "yellow_tripdata_2021-01.csv",
 				"folderPath": "NYCTaxiDataStore",
 				"fileSystem": "adlsfstrainingstore"
 			},
