@@ -15,10 +15,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "NycTaxi",
-			"table": {
-				"value": "@dataset().tablename",
-				"type": "Expression"
-			}
+			"table": "YellowTripData"
 		}
 	}
 }
