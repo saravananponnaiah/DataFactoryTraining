@@ -1,0 +1,24 @@
+{
+	"name": "ds_StagingNycTaxiData",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADLSTrainingStore",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "yellow_tripdata_2021-01.csv",
+				"folderPath": "NYCTaxiDataStore",
+				"fileSystem": "adlsfstrainingstore"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

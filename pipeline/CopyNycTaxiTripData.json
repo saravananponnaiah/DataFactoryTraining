@@ -53,8 +53,56 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Send Email",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Copy Data from ADLS",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-04.northcentralus.logic.azure.com:443/workflows/007675c9209e491a88fcaca73773721f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ekQKtnaTrrCD8Y4-jS6q7rKT795H5QYjS9e_bS4xGBo",
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/json"
+					},
+					"body": {
+						"value": "{\n    \"DataFactoryName\": \"@{pipeline().DataFactory}\",\n    \"PipelineName\": \"pipeline().parameters.PipelineName\",\n    \"SendToEmail\": \"pipeline().parameters.SendToEmail\",\n    \"Subject\": \"pipeline().parameters.Subject\"\n}",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"parameters": {
+			"PipelineName": {
+				"type": "string",
+				"defaultValue": "Copy Taxi Data"
+			},
+			"DataFactoryName": {
+				"type": "string"
+			},
+			"SendToEmail": {
+				"type": "string",
+				"defaultValue": "saravanan.ponnnaiah@outlook.com"
+			},
+			"Subject": {
+				"type": "string",
+				"defaultValue": "ADF Notification Mailer"
+			}
+		},
 		"annotations": []
 	}
 }
