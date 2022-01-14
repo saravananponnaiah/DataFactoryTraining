@@ -1,0 +1,115 @@
+{
+	"name": "ds_YellowTripData_SqlTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "VendorID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "tpep_pickup_datetime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "tpep_dropoff_datetime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "passenger_count",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "trip_distance",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "RatecodeID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "store_and_fwd_flag",
+				"type": "varchar"
+			},
+			{
+				"name": "PULocationID",
+				"type": "varchar"
+			},
+			{
+				"name": "DOLocationID",
+				"type": "varchar"
+			},
+			{
+				"name": "payment_type",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "fare_amount",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "extra",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "mta_tax",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "tip_amount",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "tolls_amount",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "improvement_surcharge",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "total_amount",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "congestion_surcharge",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			}
+		],
+		"typeProperties": {
+			"schema": "NycTaxi",
+			"table": "YellowTripData"
+		}
+	}
+}
