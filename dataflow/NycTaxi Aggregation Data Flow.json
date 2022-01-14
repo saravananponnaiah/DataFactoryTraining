@@ -19,7 +19,15 @@
 					"name": "PaymentTypeData"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_Adls_GroupedTripData",
+						"type": "DatasetReference"
+					},
+					"name": "saveGroupedTripData"
+				}
+			],
 			"transformations": [
 				{
 					"name": "YellowTripAggregateData"
@@ -28,7 +36,7 @@
 					"name": "groupedTripData"
 				}
 			],
-			"script": "source(output(\n\t\tVendorID as integer,\n\t\ttpep_pickup_datetime as timestamp,\n\t\ttpep_dropoff_datetime as timestamp,\n\t\tpassenger_count as integer,\n\t\ttrip_distance as decimal(18,0),\n\t\tRatecodeID as integer,\n\t\tstore_and_fwd_flag as string,\n\t\tPULocationID as string,\n\t\tDOLocationID as string,\n\t\tpayment_type as integer,\n\t\tfare_amount as decimal(19,4),\n\t\textra as decimal(19,4),\n\t\tmta_tax as decimal(19,4),\n\t\ttip_amount as decimal(19,4),\n\t\ttolls_amount as decimal(19,4),\n\t\timprovement_surcharge as decimal(19,4),\n\t\ttotal_amount as decimal(19,4),\n\t\tcongestion_surcharge as decimal(19,4)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> YellowTaxiData\nsource(output(\n\t\tpayment_type as integer,\n\t\tpayment_type_name as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> PaymentTypeData\nYellowTaxiData aggregate(groupBy(payment_type),\n\ttotal_payment_amount = sum(total_amount),\n\t\ttotal_trip_distance = sum(trip_distance)) ~> YellowTripAggregateData\nYellowTripAggregateData, PaymentTypeData join(YellowTripAggregateData@payment_type == PaymentTypeData@payment_type,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> groupedTripData"
+			"script": "source(output(\n\t\tVendorID as integer,\n\t\ttpep_pickup_datetime as timestamp,\n\t\ttpep_dropoff_datetime as timestamp,\n\t\tpassenger_count as integer,\n\t\ttrip_distance as decimal(18,0),\n\t\tRatecodeID as integer,\n\t\tstore_and_fwd_flag as string,\n\t\tPULocationID as string,\n\t\tDOLocationID as string,\n\t\tpayment_type as integer,\n\t\tfare_amount as decimal(19,4),\n\t\textra as decimal(19,4),\n\t\tmta_tax as decimal(19,4),\n\t\ttip_amount as decimal(19,4),\n\t\ttolls_amount as decimal(19,4),\n\t\timprovement_surcharge as decimal(19,4),\n\t\ttotal_amount as decimal(19,4),\n\t\tcongestion_surcharge as decimal(19,4)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> YellowTaxiData\nsource(output(\n\t\tpayment_type as integer,\n\t\tpayment_type_name as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> PaymentTypeData\nYellowTaxiData aggregate(groupBy(payment_type),\n\ttotal_payment_amount = sum(total_amount),\n\t\ttotal_trip_distance = sum(trip_distance)) ~> YellowTripAggregateData\nYellowTripAggregateData, PaymentTypeData join(YellowTripAggregateData@payment_type == PaymentTypeData@payment_type,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> groupedTripData\ngroupedTripData sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> saveGroupedTripData"
 		}
 	}
 }
