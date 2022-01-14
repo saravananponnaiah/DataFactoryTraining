@@ -1,0 +1,26 @@
+{
+	"name": "ds_PaymentType_SqlTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "payment_type",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "payment_type_name",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "NycTaxi",
+			"table": "PaymentType"
+		}
+	}
+}
