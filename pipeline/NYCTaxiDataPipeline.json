@@ -391,6 +391,12 @@
 				}
 			}
 		],
+		"parameters": {
+			"RecieverEmail": {
+				"type": "string",
+				"defaultValue": "saravanan.ponnaiah@outlook.com"
+			}
+		},
 		"annotations": []
 	}
 }
