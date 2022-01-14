@@ -112,7 +112,7 @@
 				"schema": [],
 				"typeProperties": {
 					"schema": "NycTaxi",
-					"table": "TripData"
+					"table": "YellowTripData"
 				}
 			},
 			"dependsOn": [
@@ -222,6 +222,316 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_Adls_GroupedTripData')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADLSTrainingStore",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "NYCTaxiDataStore/output",
+						"fileSystem": "adlsfstrainingstore"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ADLSTrainingStore')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_NycTaxiRaw')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADLSTrainingStore",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "yellow_tripdata_2021-01.csv",
+						"folderPath": "Dataset",
+						"fileSystem": "adlsfstrainingstore"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "VendorID",
+						"type": "String"
+					},
+					{
+						"name": "tpep_pickup_datetime",
+						"type": "String"
+					},
+					{
+						"name": "tpep_dropoff_datetime",
+						"type": "String"
+					},
+					{
+						"name": "passenger_count",
+						"type": "String"
+					},
+					{
+						"name": "trip_distance",
+						"type": "String"
+					},
+					{
+						"name": "RatecodeID",
+						"type": "String"
+					},
+					{
+						"name": "store_and_fwd_flag",
+						"type": "String"
+					},
+					{
+						"name": "PULocationID",
+						"type": "String"
+					},
+					{
+						"name": "DOLocationID",
+						"type": "String"
+					},
+					{
+						"name": "payment_type",
+						"type": "String"
+					},
+					{
+						"name": "fare_amount",
+						"type": "String"
+					},
+					{
+						"name": "extra",
+						"type": "String"
+					},
+					{
+						"name": "mta_tax",
+						"type": "String"
+					},
+					{
+						"name": "tip_amount",
+						"type": "String"
+					},
+					{
+						"name": "tolls_amount",
+						"type": "String"
+					},
+					{
+						"name": "improvement_surcharge",
+						"type": "String"
+					},
+					{
+						"name": "total_amount",
+						"type": "String"
+					},
+					{
+						"name": "congestion_surcharge",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ADLSTrainingStore')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_PaymentType_SqlTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "payment_type",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "payment_type_name",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "NycTaxi",
+					"table": "PaymentType"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_StagingNycTaxiData')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADLSTrainingStore",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "yellow_tripdata_2021-01.csv",
+						"folderPath": "NYCTaxiDataStore",
+						"fileSystem": "adlsfstrainingstore"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ADLSTrainingStore')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_YellowTripData_SqlTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "VendorID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "tpep_pickup_datetime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "tpep_dropoff_datetime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "passenger_count",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "trip_distance",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 0
+					},
+					{
+						"name": "RatecodeID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "store_and_fwd_flag",
+						"type": "varchar"
+					},
+					{
+						"name": "PULocationID",
+						"type": "varchar"
+					},
+					{
+						"name": "DOLocationID",
+						"type": "varchar"
+					},
+					{
+						"name": "payment_type",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "fare_amount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "extra",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "mta_tax",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "tip_amount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "tolls_amount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "improvement_surcharge",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "total_amount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "congestion_surcharge",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					}
+				],
+				"typeProperties": {
+					"schema": "NycTaxi",
+					"table": "YellowTripData"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/CopyNycTaxiTripData')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -280,17 +590,546 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "Send Email",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Copy Data from ADLS",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-04.northcentralus.logic.azure.com:443/workflows/007675c9209e491a88fcaca73773721f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ekQKtnaTrrCD8Y4-jS6q7rKT795H5QYjS9e_bS4xGBo",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"value": "{\n    \"DataFactoryName\": \"@{pipeline().DataFactory}\",\n    \"PipelineName\": \"pipeline().parameters.PipelineName\",\n    \"SendToEmail\": \"pipeline().parameters.SendToEmail\",\n    \"Subject\": \"pipeline().parameters.Subject\"\n}",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
+				"parameters": {
+					"PipelineName": {
+						"type": "string",
+						"defaultValue": "Copy Taxi Data"
+					},
+					"DataFactoryName": {
+						"type": "string"
+					},
+					"SendToEmail": {
+						"type": "string",
+						"defaultValue": "saravanan.ponnnaiah@outlook.com"
+					},
+					"Subject": {
+						"type": "string",
+						"defaultValue": "ADF Notification Mailer"
+					}
+				},
 				"annotations": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NycTaxi Aggregation Data Flow')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_YellowTripData_SqlTable",
+								"type": "DatasetReference"
+							},
+							"name": "YellowTaxiData"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_PaymentType_SqlTable",
+								"type": "DatasetReference"
+							},
+							"name": "PaymentTypeData"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_Adls_GroupedTripData",
+								"type": "DatasetReference"
+							},
+							"name": "saveGroupedTripData"
+						}
+					],
+					"transformations": [
+						{
+							"name": "YellowTripAggregateData"
+						},
+						{
+							"name": "groupedTripData"
+						}
+					],
+					"script": "source(output(\n\t\tVendorID as integer,\n\t\ttpep_pickup_datetime as timestamp,\n\t\ttpep_dropoff_datetime as timestamp,\n\t\tpassenger_count as integer,\n\t\ttrip_distance as decimal(18,0),\n\t\tRatecodeID as integer,\n\t\tstore_and_fwd_flag as string,\n\t\tPULocationID as string,\n\t\tDOLocationID as string,\n\t\tpayment_type as integer,\n\t\tfare_amount as decimal(19,4),\n\t\textra as decimal(19,4),\n\t\tmta_tax as decimal(19,4),\n\t\ttip_amount as decimal(19,4),\n\t\ttolls_amount as decimal(19,4),\n\t\timprovement_surcharge as decimal(19,4),\n\t\ttotal_amount as decimal(19,4),\n\t\tcongestion_surcharge as decimal(19,4)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> YellowTaxiData\nsource(output(\n\t\tpayment_type as integer,\n\t\tpayment_type_name as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> PaymentTypeData\nYellowTaxiData aggregate(groupBy(payment_type),\n\ttotal_payment_amount = sum(total_amount),\n\t\ttotal_trip_distance = sum(trip_distance)) ~> YellowTripAggregateData\nYellowTripAggregateData, PaymentTypeData join(YellowTripAggregateData@payment_type == PaymentTypeData@payment_type,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> groupedTripData\ngroupedTripData sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['Nyc_Yellow_Trip_Data_By_PaymentType.csv'],\n\ttruncate: true,\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> saveGroupedTripData"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_YellowTripData_SqlTable')]",
+				"[concat(variables('factoryId'), '/datasets/ds_PaymentType_SqlTable')]",
+				"[concat(variables('factoryId'), '/datasets/ds_Adls_GroupedTripData')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NYCTaxiDataPipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy rawdata to NYC Taxi Store",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".csv"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "VendorID",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "VendorID",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "tpep_pickup_datetime",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "tpep_pickup_datetime",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "tpep_dropoff_datetime",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "tpep_dropoff_datetime",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "passenger_count",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "passenger_count",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "trip_distance",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "trip_distance",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "RatecodeID",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "RatecodeID",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "store_and_fwd_flag",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "store_and_fwd_flag",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "PULocationID",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "PULocationID",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "DOLocationID",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "DOLocationID",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "payment_type",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "payment_type",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "fare_amount",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "fare_amount",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "extra",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "extra",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "mta_tax",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "mta_tax",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "tip_amount",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "tip_amount",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "tolls_amount",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "tolls_amount",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "improvement_surcharge",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "improvement_surcharge",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "total_amount",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "total_amount",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "congestion_surcharge",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "congestion_surcharge",
+											"type": "String",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_NycTaxiRaw",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_StagingNycTaxiData",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy staging data to Nyc SQL DB",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy rawdata to NYC Taxi Store",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_StagingNycTaxiData",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Aggregate taxi data",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Copy staging data to Nyc SQL DB",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "1.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "NycTaxi Aggregation Data Flow",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"YellowTaxiData": {},
+									"PaymentTypeData": {},
+									"saveGroupedTripData": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "Send Email Notification",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Aggregate taxi data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-04.northcentralus.logic.azure.com:443/workflows/007675c9209e491a88fcaca73773721f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ekQKtnaTrrCD8Y4-jS6q7rKT795H5QYjS9e_bS4xGBo",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"value": "{\n\"PipelineName\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"Subject\":\"ADF Email Notification Mailer\",\n\"SendToEmail\":\"@{pipeline().parameters.RecieverEmail}\"\n}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"RecieverEmail": {
+						"type": "string",
+						"defaultValue": "saravanan.ponnaiah@outlook.com"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_NycTaxiRaw')]",
+				"[concat(variables('factoryId'), '/datasets/ds_StagingNycTaxiData')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
+				"[concat(variables('factoryId'), '/dataflows/NycTaxi Aggregation Data Flow')]"
 			]
 		}
 	]
