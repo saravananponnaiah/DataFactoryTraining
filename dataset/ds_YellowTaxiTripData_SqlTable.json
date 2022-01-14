@@ -1,0 +1,89 @@
+{
+	"name": "ds_YellowTaxiTripData_SqlTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "VendorID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tpep_pickup_datetime",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tpep_dropoff_datetime",
+				"type": "nvarchar"
+			},
+			{
+				"name": "passenger_count",
+				"type": "nvarchar"
+			},
+			{
+				"name": "trip_distance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "RatecodeID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "store_and_fwd_flag",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PULocationID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "DOLocationID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "payment_type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "fare_amount",
+				"type": "nvarchar"
+			},
+			{
+				"name": "extra",
+				"type": "nvarchar"
+			},
+			{
+				"name": "mta_tax",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tip_amount",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tolls_amount",
+				"type": "nvarchar"
+			},
+			{
+				"name": "improvement_surcharge",
+				"type": "nvarchar"
+			},
+			{
+				"name": "total_amount",
+				"type": "nvarchar"
+			},
+			{
+				"name": "congestion_surcharge",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "NycTaxi",
+			"table": "YellowTripData"
+		}
+	}
+}
