@@ -338,7 +338,14 @@
 			{
 				"name": "Aggregate taxi data",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Copy staging data to Nyc SQL DB",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "1.00:00:00",
 					"retry": 0,
@@ -357,6 +364,30 @@
 						"computeType": "General"
 					},
 					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "Send Email Notification",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-04.northcentralus.logic.azure.com:443/workflows/007675c9209e491a88fcaca73773721f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ekQKtnaTrrCD8Y4-jS6q7rKT795H5QYjS9e_bS4xGBo",
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/json"
+					},
+					"body": {
+						"value": "{\n\"PipelineName\":\"@{pipeline().Pipeline}\",\n\"DataFactoryName\":\"@{pipeline().DataFactory}\",\n\"Subject\":\"ADF Email Notification Mailer\",\n\"SendToEmail\":\"\"\n}",
+						"type": "Expression"
+					}
 				}
 			}
 		],
