@@ -336,7 +336,7 @@
 				]
 			},
 			{
-				"name": "Data flow1",
+				"name": "Aggregate taxi data",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -348,6 +348,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"dataflow": {
+						"referenceName": "NycTaxi Aggregation Data Flow",
+						"type": "DataFlowReference"
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
